@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <gccore.h>
 #include <wiiuse/wpad.h>
-#include "WiiNetDbg.h"
+#include "include/WiiNetDbg.h"
 #include <iostream>
 #include <unordered_map>
 
@@ -118,7 +118,6 @@ int main(int argc, char **argv) {
 	{
 		// On lance cette fonction pour récupérer les informations des contrôleurs
 		WPAD_ScanPads();
-
 		// Cette fonction nous remplit la variable pressed avec l'état des boutons du
 		// controleur 0
 		u32 pressed = WPAD_ButtonsHeld(WPAD_CHAN_0);

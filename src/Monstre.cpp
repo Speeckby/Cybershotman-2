@@ -1,13 +1,14 @@
-#include "Monstre.h"
+#include "../include/Monstre.h"
 #include <stdlib.h>
 
 Monstre::Monstre(int type, int x, int y)
 {
     int x_monstre = rand() % 1480 - 740;
+    int y_monstre = 0;
     if (x_monstre < -320 || x_monstre > 320) {
-        int y_monstre = rand() % 820 - 410;
+        y_monstre = rand() % 820 - 410;
     } else {
-        int y_monstre = rand() % 100 - 50;
+        y_monstre = rand() % 100 - 50;
         if (y_monstre < 0) {
             y_monstre -= 180;
         } else {

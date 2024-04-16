@@ -1,6 +1,6 @@
 #ifndef MONSTRE_H
 #define MONSTRE_H
-
+#include "Caracteristique.h"
 
 class Monstre
 {
@@ -8,9 +8,8 @@ class Monstre
         Monstre(int type, int x, int y);
         virtual ~Monstre();
 
-        Caracteristique GetCounter() { return m_Counter; }
-
         Caracteristique * m_Carac;
+
 
     protected:
 
