@@ -1,5 +1,5 @@
 #include "Projectile.h"
-#inclide "Caracteristiques.cpp"
+#inclide "Caracteristiques.h"
 #include <cmath>
 
 Projectile::Projectile(int xperso, int yperso, int xviseur, int yviseur)
