@@ -5,7 +5,8 @@
 #include "include/WiiNetDbg.h"
 #include <iostream>
 #include <unordered_map>
-#include "getButtonStates.cpp"
+#include "src/getButtonStates.cpp"
+#include "src/menu.cpp"
 
 static void *xfb = NULL;
 static GXRModeObj *rmode = NULL;
@@ -34,28 +35,28 @@ int main(int argc, char **argv) {
 		u32 pressed = WPAD_ButtonsHeld(WPAD_CHAN_0);
 		// On scane la manette et attribue les valeurs aux variables
 		WPAD_ScanPads();
-        WPAD_Accel(WPAD_CHAN_0, &accel);
-        WPAD_Orientation(WPAD_CHAN_0, &orien);
-        WPAD_IR(WPAD_CHAN_0, &ir);
-        WPAD_Expansion(WPAD_CHAN_0, &exp);
+	        WPAD_Accel(WPAD_CHAN_0, &accel);
+	        WPAD_Orientation(WPAD_CHAN_0, &orien);
+	        WPAD_IR(WPAD_CHAN_0, &ir);
+	        WPAD_Expansion(WPAD_CHAN_0, &exp);
 
-        // Boutons
-        std::unordered_map<std::string, bool> states = getButtonStates(pressed);
+	        // Boutons
+	        std::unordered_map<std::string, bool> states = getButtonStates(pressed);
 
 		if (pressed & WPAD_BUTTON_A)
-            dbg.RPrint("Le bouton A vient d'etre appuye !");
+           		 dbg.RPrint("Le bouton A vient d'etre appuye !");
 
 		// On sort de la boucle et donc on quitte le programme et on retourne au launcher si le bouton home est appuyé
 		if ( pressed & WPAD_BUTTON_HOME ) {
-            if (menu) exit(0);
-            else menu = true;
+            		if (menu) exit(0);
+            		else menu = true;
 		};
 
 		if (menu) {
-            // menu
+            		menu = menu_index(ir);
 		}
 		else {
-            // jeu
+            		// jeu
 		}
 
 		// On attend la prochaine trame à dessiner
