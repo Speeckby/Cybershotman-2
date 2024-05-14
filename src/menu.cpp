@@ -54,9 +54,31 @@ void menu_gauche(ir_t ir) {
     else perso_actuel = perso_actuel - 1;
 };
 
+void afficher_menu() {
+    afficher_image(220, 0, "sd:/survivor/title.png");
+    afficher_image(320, 600, "sd:/survivor/menu_off.png");
+    afficher_image(220, 240, "sd:/survivor/menu_play.png");
+    afficher_image(180, 60, "sd:/survivor/menu_arrow_left.png");
+    afficher_image(420, 60, "sd:/survivor/menu_arrow_right.png");
+}
+
+void afficher_image(int coordX, int coordY, string path) {
+    GRRLIB_texImg* tex_image = GRRLIB_LoadTextureFromFile(path);
+    GRRLIB_DrawImg (coordX, coordY, tex_image);
+}
+
+/*
+    Taille fenêtre :  640x360
+Titre du Jeu : 200x60, coord_x=220, coord_y=0
+Bouton off : 40x40, coord_x=320, coord_y=600
+Bouton jouer : 200x60, coord_x=220, coord_y=240
+Bouton flèche gauche : 60x240, coord_x=180, coord_y=60
+Bouton flèche droite : 60x240, coord_x=420, coord_y=60
+*/
+
 bool menu_index(ir_t ir) {
 
-    GRRLIB_DrawImg(0,0,/*txtimg*/);
+    afficher_menu();
     afficher_perso();
 
     if (menu_play(ir)) return false;
