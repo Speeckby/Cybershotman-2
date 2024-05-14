@@ -60,12 +60,12 @@ void afficher_menu() {
     afficher_image(220, 240, "sd:/survivor/menu_play.png");
     afficher_image(180, 60, "sd:/survivor/menu_arrow_left.png");
     afficher_image(420, 60, "sd:/survivor/menu_arrow_right.png");
-}
+};
 
 void afficher_image(int coordX, int coordY, string path) {
     GRRLIB_texImg* tex_image = GRRLIB_LoadTextureFromFile(path);
     GRRLIB_DrawImg (coordX, coordY, tex_image);
-}
+};
 
 /*
     Taille fenêtre :  640x360
