@@ -17,7 +17,8 @@ Monstre::Monstre(int type, int x, int y)
     }
 
     if (type == 0) {
-        m_Carac = new Caracteristique(x + x_monstre, y + y_monstre, 100, 10, 2);
+        GRRLIB_texImg* img = GRRLIB_LoadTextureFromFile("sd:/Cybershotman2/Monstre1.png");
+        m_Carac = new Caracteristique(x + x_monstre, y + y_monstre, 100, 10, 2, img);
     }
 }
 

@@ -1,4 +1,4 @@
-#include "WiiNetDbg.h"
+#include "../include/WiiNetDbg.h"
 
 
 // constructeur :

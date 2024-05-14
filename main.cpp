@@ -1,33 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gccore.h>
+
+#include <grrlib.h>
 #include <wiiuse/wpad.h>
 #include "include/WiiNetDbg.h"
-#include <iostream>
-#include <unordered_map>
-#include "src/getButtonStates.cpp"
-#include "src/menu.cpp"
+#include "include/Menu.h"
+#include "include/Map.h"
 
-static void *xfb = NULL;
-static GXRModeObj *rmode = NULL;
 
-void InitWii(void);
+// le programme principal, fonction qui sera exécutée au lancement de l'application
+int main(int argc, char **argv)
+{
+    // déclaration d'une variable pour fermer l'application
+    bool done = false;
 
-int main(int argc, char **argv) {
+    // initialisation de la partie graphique via GRRLIB
+    GRRLIB_Init();
 
-	InitWii();
+    // Initialise the Wiimotes
+    WPAD_Init();
 
-	WPAD_SetDataFormat(WPAD_CHAN_0,WPAD_FMT_BTNS_ACC_IR);
+    #ifdef DEBUG // activation du débuggage uniquement si on est en target debug
+    WiiNetDbg dbg(MYIP);
+    #endif //DEBUG
+
+	// on demande les informations sur les boutons, la caméra et les accéléromètres
+	WPAD_SetDataFormat(WPAD_CHAN_ALL,WPAD_FMT_BTNS_ACC_IR);
+
 	vec3w_t accel;
 	orient_t orien;
 	expansion_t exp;
 	ir_t ir;
 
-	WiiNetDbg dbg("192.168.1.236");
+    bool menu = true;
+    Map carte = Map(1);
 
-	bool menu = true;
-
-	while(1)
+	// boucle qui continuera tant que l'application n'est pas arrêtée
+	while(!done)
 	{
 		//récupération des informations des contrôleurs
 		WPAD_ScanPads();
@@ -35,16 +45,10 @@ int main(int argc, char **argv) {
 		u32 pressed = WPAD_ButtonsHeld(WPAD_CHAN_0);
 		// On scane la manette et attribue les valeurs aux variables
 		WPAD_ScanPads();
-	        WPAD_Accel(WPAD_CHAN_0, &accel);
-	        WPAD_Orientation(WPAD_CHAN_0, &orien);
-	        WPAD_IR(WPAD_CHAN_0, &ir);
-	        WPAD_Expansion(WPAD_CHAN_0, &exp);
-
-	        // Boutons
-	        std::unordered_map<std::string, bool> states = getButtonStates(pressed);
-
-		if (pressed & WPAD_BUTTON_A)
-           		 dbg.RPrint("Le bouton A vient d'etre appuye !");
+        WPAD_Accel(WPAD_CHAN_0, &accel);
+	    WPAD_Orientation(WPAD_CHAN_0, &orien);
+        WPAD_IR(WPAD_CHAN_0, &ir);
+        WPAD_Expansion(WPAD_CHAN_0, &exp);
 
 		// On sort de la boucle et donc on quitte le programme et on retourne au launcher si le bouton home est appuyé
 		if ( pressed & WPAD_BUTTON_HOME ) {
@@ -53,10 +57,10 @@ int main(int argc, char **argv) {
 		};
 
 		if (menu) {
-            		menu = menu_index(ir);
+            menu = menu_index(ir, pressed);
 		}
 		else {
-            		// jeu
+            carte.afficher_map(exp);
 		}
 
 		// On attend la prochaine trame à dessiner
@@ -64,40 +68,4 @@ int main(int argc, char **argv) {
 	}
 	// valeur de retour, 0 = tout s'est bien passé
 	return 0;
-}
-
-
-void InitWii(void)
-{
-	// Initialisation du système vidéo
-	VIDEO_Init();
-
-	// initialisation des contrôleurs
-	WPAD_Init();
-
-	// Obtain the preferred video mode from the system
-	// This will correspond to the settings in the Wii menu
-	rmode = VIDEO_GetPreferredMode(NULL);
-
-	// Allocate memory for the display in the uncached region
-	xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
-
-	// Initialise the console, required for printf
-	console_init(xfb,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
-
-	// Set up the video registers with the chosen mode
-	VIDEO_Configure(rmode);
-
-	// Tell the video hardware where our display memory is
-	VIDEO_SetNextFramebuffer(xfb);
-
-	// Make the display visible
-	VIDEO_SetBlack(FALSE);
-
-	// Flush the video register changes to the hardware
-	VIDEO_Flush();
-
-	// Wait for Video setup to complete
-	VIDEO_WaitVSync();
-	if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
 }

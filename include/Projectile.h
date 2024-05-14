@@ -6,9 +6,10 @@ class Projectile
 {
     public:
         Projectile(int xperso, int yperso, int xviseur, int yviseur);
+        void updatePos();
         virtual ~Projectile();
 
-        Caracteristiques* m_cara;
+        Caracteristique* m_carac;
         int xviseur;
         int yviseur;
         float alpha;

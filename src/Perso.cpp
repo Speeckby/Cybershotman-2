@@ -9,13 +9,15 @@ Perso::est_mort()
 {
     return donnees.hp <= 0;
 }
-Perso::desequiper("%d", bouton)
+void Perso::deplacer_perso(expansion_t exp)
 {
-    delete inventaire[bouton];
+    donnees->m_x -= (exp.nunchuk.js.pos.x - 127)/20;
+    donnees->m_y += (exp.nunchuk.js.pos.y - 125)/20;
 }
-Perso::tirer("%d", coord_x,"%d",coord_y,)
+
+void Perso::afficher_perso()
 {
-    delete inventaire[bouton];
+    GRRLIB_DrawTile(donnees->m_x, donnees->m_y, donnees->m_image, 0,1,1,  0xFFFFFFFF, 0);
 }
 
 Perso::~Perso()
