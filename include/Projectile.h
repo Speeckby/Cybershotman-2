@@ -7,6 +7,7 @@ class Projectile
     public:
         Projectile(int xperso, int yperso, int xviseur, int yviseur);
         void updatePos();
+        bool isHidden();
         virtual ~Projectile();
 
         Caracteristique* m_carac;
