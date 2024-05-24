@@ -7,7 +7,7 @@
 #include "include/WiiNetDbg.h"
 #include "include/Menu.h"
 #include "include/Map.h"
-
+#include "include/Projectile.h"
 
 // le programme principal, fonction qui sera exécutée au lancement de l'application
 int main(int argc, char **argv)
@@ -36,6 +36,9 @@ int main(int argc, char **argv)
     bool menu = true;
     Map carte = Map(1);
 
+	// On défini l'espace de stockage des projectiles
+    set <Projectile> projectiles;
+
 	// boucle qui continuera tant que l'application n'est pas arrêtée
 	while(!done)
 	{
@@ -61,6 +64,14 @@ int main(int argc, char **argv)
 		}
 		else {
             carte.afficher_map(exp);
+	    for (Projectile projectile : projectiles)
+            {
+                projectile.updatePos();
+                projectile.display();
+                if (projectile.isHidden()) {
+                    delete projectile;
+                }
+            }
 		}
 
 		// On attend la prochaine trame à dessiner
