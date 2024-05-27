@@ -5,8 +5,10 @@
 class Projectile
 {
     public:
-        Projectile(int xperso, int yperso, int xviseur, int yviseur);
+        Projectile(int xperso, int yperso, int xviseur, int yviseur, GRRLIB_texImg* img);
         void updatePos();
+        void display();
+        bool isHidden();
         virtual ~Projectile();
 
         Caracteristique* m_carac;

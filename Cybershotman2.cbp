@@ -15,6 +15,7 @@
 					<Add option="-g" />
 					<Add option="-DGEKKO" />
 					<Add option="-DDEBUG" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -24,12 +25,14 @@
 				<Option compiler="gnu_ggc_compiler_for_the_wii" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="include/Arme.h" />
 		<Unit filename="include/Caracteristique.h" />
 		<Unit filename="include/Inventaire.h" />
 		<Unit filename="include/Map.h" />
@@ -40,15 +43,16 @@
 		<Unit filename="include/WiiNetDbg.h" />
 		<Unit filename="include/helper.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Arme.cpp" />
 		<Unit filename="src/Caracteristique.cpp" />
 		<Unit filename="src/Inventaire.cpp" />
 		<Unit filename="src/Map.cpp" />
+		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/Monstre.cpp" />
 		<Unit filename="src/Perso.cpp" />
 		<Unit filename="src/Projectile.cpp" />
 		<Unit filename="src/WiiNetDbg.cpp" />
 		<Unit filename="src/helper.cpp" />
-		<Unit filename="src/menu.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

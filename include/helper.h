@@ -5,6 +5,6 @@
 #include <wiiuse/wpad.h>
 #include <string>
 
-std::unordered_map<std::string, bool> getButton(u32 pressed);
+std::unordered_map<std::string, bool> getButton(u32 held, u32 down);
 
 #endif // HELPER_H_INCLUDED

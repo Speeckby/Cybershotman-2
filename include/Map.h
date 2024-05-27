@@ -1,21 +1,20 @@
-#ifndef MAP_H
-#define MAP_H
 #include <grrlib.h>
 #include <wiiuse/wiiuse.h>
+// src/Map.h
+#ifndef MAP_H
+#define MAP_H
+ // Assurez-vous que cette ligne correspond à l'emplacement de GRRLIB.h dans votre projet
 
-class Map
-{
-    public:
-        Map(int id_map);
-        virtual ~Map();
-        void afficher_map(expansion_t exp);
-    protected:
+// Structure example pour expansion_t (modifiez selon vos besoins)
+typedef struct {
+    struct {
+        struct {
+            int x;
+            int y;
+        } js;
+    } nunchuk;
+} expansion_ts;
 
-    private:
-        GRRLIB_texImg* m_tuiles_carte;
-        double m_tab_map[36][36];
-        int m_x_map;
-        int m_y_map;
-};
+void afficher_map(expansion_t exp, GRRLIB_texImg* tuiles_carte, int x_map, int y_map);
 
 #endif // MAP_H

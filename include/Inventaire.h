@@ -1,7 +1,8 @@
 #ifndef INVENTAIRE_H
 #define INVENTAIRE_H
+#include "Arme.h"
 
-/*
+
 class Inventaire
 {
     public:
@@ -10,10 +11,9 @@ class Inventaire
 
         int m_taille;
         Arme * m_arme;
-        Capacite * inventaire[5];
     protected:
 
     private:
-};*/
+};
 
 #endif // INVENTAIRE_H
