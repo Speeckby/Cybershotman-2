@@ -1,7 +1,6 @@
 #ifndef PERSO_H
 #define PERSO_H
 
-
 #include "Caracteristique.h"
 #include "Inventaire.h"
 #include <wiiuse/wiiuse.h>

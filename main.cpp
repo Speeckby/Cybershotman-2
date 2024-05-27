@@ -8,7 +8,7 @@
 #include <wiiuse/wpad.h>
 #include "include/Menu.h"
 #include "include/Map.h"
-#include "WiiNetDbg.h"
+#include "include/Projectile.h"
 
 // le programme principal, fonction qui sera exécutée au lancement de l'application
 int main(int argc, char **argv)

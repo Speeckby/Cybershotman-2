@@ -35,4 +35,5 @@ void Projectile::display()
 Projectile::~Projectile()
 {
     delete m_carac;
+
 }
