@@ -1,5 +1,7 @@
 #include <grrlib.h>
 #include <wiiuse/wiiuse.h>
+
+
 void afficher_map(expansion_t exp,GRRLIB_texImg* tuiles_carte,int x_map,int y_map) {
     int zoom = 2; // Facteur de zoom
     int tab_map [36][36]= {
@@ -59,3 +61,4 @@ void afficher_map(expansion_t exp,GRRLIB_texImg* tuiles_carte,int x_map,int y_ma
     // Mise à jour des coordonnées de la carte en fonction des positions du joystick
 
 }
+
