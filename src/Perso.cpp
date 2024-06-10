@@ -66,7 +66,6 @@ int Perso::changement_sprite(expansion_t exp)
         return 4;
     }
 }
-
 void Perso::reset() {
     donnees->m_x = 100;
     donnees->m_y = 200;

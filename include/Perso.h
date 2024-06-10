@@ -17,6 +17,7 @@ class Perso
         int verif_y(int newCoordX, int newCoordY);
         int verif_x(int newCoordX, int newCoordY);
         int changement_sprite(expansion_t exp);
+
         virtual ~Perso();
         void reset();
 

@@ -1,15 +1,21 @@
 #ifndef MONSTRE_H
 #define MONSTRE_H
+#include "Perso.h"
 #include "Caracteristique.h"
 
 class Monstre
 {
     public:
-        Monstre(int type, int x, int y);
+        Monstre(int type, int x, int y, GRRLIB_texImg* img);
+        void afficher_monstre(GRRLIB_texImg* img);
+        void deplacer_monstre(expansion_t exp,Perso* perso, int x_map, int y_map);
+        void collision_monstre();
         virtual ~Monstre();
 
-        Caracteristique * m_Carac;
 
+        Caracteristique * m_Carac;
+        float x;
+        float y;
 
     protected:
 

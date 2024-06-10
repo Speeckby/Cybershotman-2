@@ -49,11 +49,13 @@ void Menu::menu_gauche(ir_t ir) {
     else personnage += -1;
 }
 
-bool Menu::menu_index(ir_t ir, u32 held, u32 down, const GRRLIB_texImg* img_menu[9]) {
+bool Menu::menu_index(ir_t ir, u32 held, u32 down, const GRRLIB_texImg* img_menu[8],GRRLIB_texImg* img_perso[3], Perso * perso) {
     std::unordered_map<std::string, bool> states = getButton(held, down);
 
-    if (menu_play(ir, states)) return false;
-
+    if (menu_play(ir, states)) {
+        perso->donnees->m_image = img_perso[personnage];
+        return false;
+    }
     afficher_menu(img_menu);
     afficher_perso(img_menu);
 
@@ -63,7 +65,6 @@ bool Menu::menu_index(ir_t ir, u32 held, u32 down, const GRRLIB_texImg* img_menu
         menu_droite(ir);
         menu_gauche(ir);
     }
-
     return true;
 }
 

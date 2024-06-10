@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+using namespace std;
+
 #include "include/helper.h"
 #include "include/Caracteristique.h"
 #include "include/Perso.h"
@@ -9,12 +11,14 @@
 #include "include/Menu.h"
 #include "include/Map.h"
 #include "include/Projectile.h"
+#include "include/Monstre.h"
 
 // le programme principal, fonction qui sera exécutée au lancement de l'application
 int main(int argc, char **argv)
 {
 
     // déclaration d'une variable pour fermer l'application
+	int score;
 
     // initialisation de la partie graphique via GRRLIB
     GRRLIB_Init();
@@ -45,11 +49,26 @@ int main(int argc, char **argv)
     img_menu[7] = GRRLIB_LoadTextureFromFile("sd:/survivor/menu/arrow_right.png");
     img_menu[8] = GRRLIB_LoadTextureFromFile("sd:/survivor/menu/background.png");
 
-    GRRLIB_texImg* tuiles_perso = GRRLIB_LoadTextureFromFile("sd:/survivor/player/purple_sprite.png");
-    GRRLIB_InitTileSet(tuiles_perso, 32,32,0);
-    GRRLIB_SetMidHandle(tuiles_perso, true);
+    GRRLIB_texImg* tuiles_perso_purple = GRRLIB_LoadTextureFromFile("sd:/survivor/player/purple_sprite.png");
+    GRRLIB_InitTileSet(tuiles_perso_purple, 32,32,0);
+    GRRLIB_SetMidHandle(tuiles_perso_purple, true);
 
-	Caracteristique perso_carac = Caracteristique(100,200,100,15,1,tuiles_perso);
+    GRRLIB_texImg* tuiles_perso_blue = GRRLIB_LoadTextureFromFile("sd:/survivor/player/blue_sprite.png");
+    GRRLIB_InitTileSet(tuiles_perso_blue, 32,32,0);
+    GRRLIB_SetMidHandle(tuiles_perso_blue, true);
+
+    GRRLIB_texImg* tuiles_perso_white = GRRLIB_LoadTextureFromFile("sd:/survivor/player/white_sprite.png");
+    GRRLIB_InitTileSet(tuiles_perso_white, 32,32,0);
+    GRRLIB_SetMidHandle(tuiles_perso_white, true);
+
+
+    GRRLIB_texImg* img_perso[3];
+
+    img_perso[0] = tuiles_perso_blue;
+    img_perso[1] = tuiles_perso_purple;
+    img_perso[2] = tuiles_perso_white;
+
+	Caracteristique perso_carac = Caracteristique(100,200,100,15,1,cursor);
 
 
     Perso * perso = new Perso(&perso_carac);
@@ -62,10 +81,21 @@ int main(int argc, char **argv)
     GRRLIB_InitTileSet(projectile_img,28,28,0);
     GRRLIB_SetMidHandle(projectile_img, true);
 
+    GRRLIB_texImg* blob = GRRLIB_LoadTextureFromFile("sd:/survivor/monstre/blob.png");
+    GRRLIB_InitTileSet(blob, 32,32, 0);
+    GRRLIB_SetMidHandle(blob, true);
 
-    Menu * menus = new Menu();
+
+    GRRLIB_ttfFont * police = GRRLIB_LoadTTFFromFile("sd:/survivor/font.ttf");
+    score = 0;
+    Monstre * monstre = new Monstre(1,perso->donnees->m_x,perso->donnees->m_y, blob);
+
+    Menu menus = Menu();
 
     bool menu_bool = true;
+    int t = 0;
+    int skin_add = 0;
+    int var_bg = 0;
 
     // On défini l'espace de stockage des projectiles
 
@@ -96,18 +126,39 @@ int main(int argc, char **argv)
                 projectiles.clear();
             }
 		};
-
+        if (var_bg == 0){GRRLIB_FillScreen(0x000000FF);
+        }
+        if (var_bg == 1){GRRLIB_FillScreen(0x211b27FF);
+        }
 		VIDEO_WaitVSync();
 
 		if (menu_bool) {
-            menu_bool = menus->menu_index(ir, held, down, img_menu);
+            menu_bool = menus.menu_index(ir, held, down, img_menu, img_perso, perso);
 		}
 		else {
+            score+=1%100;
 		    std::unordered_map<std::string, bool> states = getButton(held, down);
+            std::string score_str = std::to_string(score);
+            const char* score_char = score_str.c_str();
+            var_bg = 1;
+            int x_map = 100-perso->donnees->m_x*2;
+            int y_map = 100-perso->donnees->m_y*2;
             int skin = perso->changement_sprite(exp);
             perso->deplacer_perso(exp);
             afficher_map(exp, tuiles_carte, 100-perso->donnees->m_x*2, 100-perso->donnees->m_y*2);
-            perso->afficher_perso(skin);
+            if (skin > 1){
+                t ++;
+                if (t%5 == 0){
+                    skin_add++;
+                }
+            }
+            else{
+                t = 0;
+                skin_add = 0;
+                }
+            if (skin_add == 4){skin_add = 0;}
+            perso->afficher_perso(skin+skin_add);
+            monstre -> deplacer_monstre(exp,perso, x_map, y_map);
 
             if (states["A"] & (projectiles.size() < 5)) projectiles.push_back(new Projectile(perso->donnees->m_x,perso->donnees->m_y, ir.x, ir.y, projectile_img));
             vector <Projectile *>::iterator it = projectiles.begin();
@@ -125,6 +176,8 @@ int main(int argc, char **argv)
                     ++it;
                 }
             }
+            GRRLIB_PrintfTTF(100, 100, police, score_char, 300, 0x000000FF);
+
 		}
         GRRLIB_DrawImg(ir.x ,ir.y, cursor, 0, 1, 1, 0xFFFFFFFF);
 
