@@ -4,7 +4,6 @@
 #include "Caracteristique.h"
 #include "Inventaire.h"
 #include <wiiuse/wiiuse.h>
-#include "Projectile.h"
 #include <set>
 using namespace std;
 
@@ -18,8 +17,8 @@ class Perso
         int verif_y(int newCoordX, int newCoordY);
         int verif_x(int newCoordX, int newCoordY);
         int changement_sprite(expansion_t exp);
-        void tirer(set <Projectile *> projectiles, ir_t ir, GRRLIB_texImg* img);
         virtual ~Perso();
+        void reset();
 
         Caracteristique* donnees;
         Inventaire* inventaire;

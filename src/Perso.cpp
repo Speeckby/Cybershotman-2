@@ -42,13 +42,8 @@ int Perso::verif_x(int newCoordX, int newCoordY) {
     };
     return donnees->m_x = newCoordX;
 }
-void Perso::tirer(set <Projectile *> projectiles, ir_t ir, GRRLIB_texImg* img)
-{
-    projectiles.insert(new Projectile(donnees->GetX(),donnees->GetY(), ir.x, ir.y, img));
-}
 int Perso::changement_sprite(expansion_t exp)
 {
-    //int pos_Y = exp.nunchuk.js.pos.x;
     int pos_X = exp.nunchuk.js.pos.x;
 
     if (direction == true)
@@ -70,6 +65,11 @@ int Perso::changement_sprite(expansion_t exp)
         direction=true;
         return 4;
     }
+}
+
+void Perso::reset() {
+    donnees->m_x = 100;
+    donnees->m_y = 200;
 }
 Perso::~Perso()
 {
