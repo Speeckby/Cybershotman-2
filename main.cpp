@@ -3,6 +3,12 @@
 #include <vector>
 using namespace std;
 
+// musique
+#include <mp3player.h>
+#include <sdcard/wiisd_io.h>
+#include <fat.h>
+#include <asndlib.h>
+
 #include "include/helper.h"
 #include "include/Caracteristique.h"
 #include "include/Perso.h"
@@ -13,6 +19,18 @@ using namespace std;
 #include "include/Projectile.h"
 #include "include/Monstre.h"
 
+void SDCard_Init()
+{
+    __io_wiisd.startup();
+    fatMountSimple("sd", &__io_wiisd);
+}
+
+// fournit un accès vers le fichier utilisable par le lecteur mp3 intégré à la bibliothèque
+s32 lecteur_mp3(void *fichier,void *buffer,s32 taille)//création du lecteur mp3
+{
+    return fread(buffer,1,taille,(FILE*)fichier);
+}
+
 // le programme principal, fonction qui sera exécutée au lancement de l'application
 int main(int argc, char **argv)
 {
@@ -20,11 +38,12 @@ int main(int argc, char **argv)
     // déclaration d'une variable pour fermer l'application
 	int score;
 
-    // initialisation de la partie graphique via GRRLIB
+    // initialisations
     GRRLIB_Init();
-
-    // Initialise the Wiimotes
     WPAD_Init();
+    SDCard_Init();
+    ASND_Init();
+    MP3Player_Init();
 
 	// on demande les informations sur les boutons, la caméra et les accéléromètres
 	WPAD_SetDataFormat(WPAD_CHAN_ALL,WPAD_FMT_BTNS_ACC_IR);
@@ -104,6 +123,17 @@ int main(int argc, char **argv)
 	// boucle qui continuera tant que l'application n'est pas arrêtée
 	while(1)
 	{
+
+		if (!MP3Player_IsPlaying())
+        {
+            //On ouvre le fichier en lecture et binaire
+            FILE *fichier=fopen("sd:/survivor/son/easteregg.mp3","rb");
+            if (fichier != NULL) {
+                MP3Player_PlayFile(fichier,lecteur_mp3,NULL); //On commence la lecture musique menu
+                MP3Player_Volume(255);
+            }
+        }
+	
 		//récupération des informations des contrôleurs
 		WPAD_ScanPads();
 
