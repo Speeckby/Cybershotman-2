@@ -1,7 +1,6 @@
 #include <grrlib.h>
 #include <wiiuse/wiiuse.h>
 
-
 void afficher_map(expansion_t exp,GRRLIB_texImg* tuiles_carte,int x_map,int y_map) {
     int zoom = 2; // Facteur de zoom
     int tab_map [36][36]= {
@@ -46,13 +45,12 @@ void afficher_map(expansion_t exp,GRRLIB_texImg* tuiles_carte,int x_map,int y_ma
     for (int i = 0; i < 36; i++) {
         for (int j = 0; j < 36; j++) {
             // Calcul des positions des tuiles en fonction du zoom et des coordonnées de la carte
-            int x_position =100+x_map + 16 * zoom * j;
+            int x_position = 100+x_map + 16 * zoom * j;
             int y_position = -100+y_map + 16 * zoom * i;
 
             // Dessiner la tuile
 
             GRRLIB_DrawTile(x_position,y_position, tuiles_carte, 0, zoom, zoom, 0xFFFFFFFF,tab_map[i][j]);
-
             //GRRLIB_DrawTile(x_position, y_position, m_tuiles_carte, 0, zoom, zoom, 0xFFFFFFFF, m_tab_map[i][j]);
 
         }
@@ -61,4 +59,3 @@ void afficher_map(expansion_t exp,GRRLIB_texImg* tuiles_carte,int x_map,int y_ma
     // Mise à jour des coordonnées de la carte en fonction des positions du joystick
 
 }
-

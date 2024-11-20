@@ -9,7 +9,8 @@ class Monstre
         Monstre(int type, int x, int y, GRRLIB_texImg* img);
         void afficher_monstre(GRRLIB_texImg* img);
         void deplacer_monstre(expansion_t exp,Perso* perso, int x_map, int y_map);
-        void collision_monstre();
+        bool collision_monstre(Perso* perso);
+        void collision_intermonstre(Monstre* autre_monstre);
         virtual ~Monstre();
 
 

@@ -3,6 +3,7 @@
 #include <wiiuse/wpad.h>
 #include "Caracteristique.h"
 #include "Perso.h"
+#include "Monstre.h"
 
 #include <cmath>
 
@@ -13,6 +14,7 @@ class Projectile
         void updatePos(expansion_t exp);
         void display();
         bool isHidden();
+        bool collision(Monstre* monstre);
         virtual ~Projectile();
 
         Caracteristique* m_carac;

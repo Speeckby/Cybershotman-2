@@ -1,6 +1,7 @@
 #include "../include/Perso.h"
-bool direction = true;
-
+int previousDirection = 8;
+bool deplacement = false;
+int tolerance = 25;
 Perso::Perso(Caracteristique* caracteristiques)
 {
     donnees = caracteristiques;
@@ -12,8 +13,8 @@ bool Perso::est_mort()
 }
 void Perso::deplacer_perso(expansion_t exp)
 {
-    int newCoordY = donnees->m_y + ((exp.nunchuk.js.pos.y - 125)/-20)*donnees->m_vit;
-    int newCoordX = donnees->m_x - ((exp.nunchuk.js.pos.x - 127)/-20)*donnees->m_vit;
+    int newCoordY = donnees->m_y + ((exp.nunchuk.js.pos.y - 127)/-30)*donnees->m_vit;
+    int newCoordX = donnees->m_x - ((exp.nunchuk.js.pos.x - 127)/-30)*donnees->m_vit;
 
     donnees->m_x = verif_x(newCoordX, newCoordY);
     donnees->m_y = verif_y(newCoordX, newCoordY);
@@ -42,33 +43,45 @@ int Perso::verif_x(int newCoordX, int newCoordY) {
     };
     return donnees->m_x = newCoordX;
 }
-int Perso::changement_sprite(expansion_t exp)
-{
-    int pos_X = exp.nunchuk.js.pos.x;
 
-    if (direction == true)
-    {
-        if (124<=pos_X && pos_X <= 130){ // Si neutre
-            return 0;
-        }
-    }
-    if (direction == false){
-    if (124<=pos_X && pos_X <= 130){ // Si neutre
-            return 1;
-        }
-    }
-    if (pos_X<125){ // Si Gauche
-        direction=false;
-        return 8;
-    }
-    if (pos_X>130){ // Si Gauche
-        direction=true;
-        return 4;
+void Perso::perdre_vie()
+{
+    if (!est_mort()) {
+        donnees->m_hp -= 1;
     }
 }
-void Perso::reset() {
-    donnees->m_x = 100;
-    donnees->m_y = 200;
+
+
+int Perso::changement_sprite(expansion_t exp)
+{
+    int pos_Y = exp.nunchuk.js.pos.y - 125;
+    int pos_X = exp.nunchuk.js.pos.x - 125;
+    if (pos_X < -tolerance && pos_Y > -tolerance && pos_Y < tolerance) {  // Gauche
+        previousDirection = 8;
+        deplacement = true;
+        return 8;
+    } else if (pos_X > tolerance && pos_Y > -tolerance && pos_Y < tolerance) {  // Droite
+        previousDirection = 4;
+        deplacement = true;
+        return 4;
+    } else if (pos_Y > tolerance || pos_Y < -tolerance) {  // Axe Y
+        if (pos_X > -tolerance && pos_X < tolerance) {
+            deplacement = true;
+            return previousDirection;
+        }
+        if (pos_X < -tolerance) {  // Gauche
+            previousDirection = 8;
+            deplacement = true;
+            return 8;
+        }
+        if (pos_X > tolerance) {  // Droite
+            previousDirection = 4;
+            deplacement = true;
+            return 4;
+        }
+    }
+    deplacement = false;
+    return previousDirection == 8 ? 1 : 0;
 }
 Perso::~Perso()
 {

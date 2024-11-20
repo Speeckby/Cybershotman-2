@@ -2,7 +2,7 @@
 
 Projectile::Projectile(int xperso, int yperso, int xviseur, int yviseur, GRRLIB_texImg* img)
 {
-    m_carac = new Caracteristique(xperso, yperso, 0, 20, 15, img);
+    m_carac = new Caracteristique(xperso, yperso, 0, 20, 4, img);
     alpha = atan2((yviseur-yperso),(xviseur-xperso));
     dx = cos(alpha) * m_carac->m_vit;
     dy = sin(alpha) * m_carac->m_vit;
@@ -10,8 +10,8 @@ Projectile::Projectile(int xperso, int yperso, int xviseur, int yviseur, GRRLIB_
 
 void Projectile::updatePos(expansion_t exp)
 {
-    m_carac->m_x += dx - (exp.nunchuk.js.pos.x - 125) /10;
-    m_carac->m_y += dy + (exp.nunchuk.js.pos.y - 125) /10;
+    m_carac->m_x += dx - (exp.nunchuk.js.pos.x - 125) /30;
+    m_carac->m_y += dy + (exp.nunchuk.js.pos.y - 125) /30;
 }
 
 bool Projectile::isHidden()
@@ -23,6 +23,12 @@ bool Projectile::isHidden()
 
 
     return false;
+}
+bool Projectile::collision(Monstre* monstre) {
+    float dx = m_carac->GetX() - monstre->m_Carac->m_x;
+    float dy = m_carac->GetY() - monstre->m_Carac->m_y;
+    float distance = sqrt(dx * dx + dy * dy);
+    return distance < (monstre->m_Carac->m_radius + m_carac->m_radius);
 }
 
 void Projectile::display()
