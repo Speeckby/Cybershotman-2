@@ -2,6 +2,8 @@
 ⚠️Le projet n'a pas été fini suite à des problèmes rencontrés lors du lancement plusieurs mois après, il se peut qu'il y ai donc des erreurs !!⚠️
 
 ## Résumé du projet
+### Vidéo du projet peu avant la fin
+![](/video.mp4 "Vidéo du projet")
 ### Contexte 
 Le jeu a été réalisé en cours en C++ durant un projet de l'année 2024. Le but était de créer un jeu fonctionnel sur Wii ou sur émulateur en groupe de 6 personnes. 
 ### Objectif
